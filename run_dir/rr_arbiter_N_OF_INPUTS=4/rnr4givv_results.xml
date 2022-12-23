@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1671837760" />
+    <testcase name="run_test_001" classname="test_rr_arbiter" file="/rr_arb/.tox/py39/lib/python3.9/site-packages/cocotb/regression.py" lineno="604" time="0.002218961715698242" sim_time_ns="110.001" ratio_time="49573.185162136026" />
+  </testsuite>
+</testsuites>
