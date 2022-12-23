@@ -58,3 +58,6 @@ build/*
 
 # Vim temp files
 *.swp
+
+.tox
+run_dir
