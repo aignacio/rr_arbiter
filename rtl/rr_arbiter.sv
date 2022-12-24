@@ -21,6 +21,11 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+*
+* Description of behaviour:
+*  - If multiple masters are requesting, grant a single master each time we update the round
+*  - Requests are considered persistent, i.e they do not disappear from round to round
+*  - If all masters were served, restart the arbitration
  */
 module rr_arbiter #(
   parameter int N_OF_INPUTS = 2
@@ -34,15 +39,6 @@ module rr_arbiter #(
   logic [N_OF_INPUTS-1:0] mask_ff, next_mask;
   logic [N_OF_INPUTS-1:0] grant_ff, next_grant;
 
-  function automatic int count_ones();
-    int ones = 0;
-
-    for (int i=0; i<N_OF_INPUTS; i++) begin
-      ones += int'(req_i[i]);
-    end
-    return ones;
-  endfunction
-
   always_comb begin
     next_mask  = mask_ff;
     next_grant = grant_ff;
@@ -52,25 +48,25 @@ module rr_arbiter #(
     if (update_i) begin
       next_grant = '0;
 
+      // Checking each master against the mask
       for (int i=0; i<N_OF_INPUTS; i++) begin
-        if (req_i[i] == 1'b1) begin
-          if (mask_ff[i] == 1'b1) begin
+        if (req_i[i] && mask_ff[i]) begin
+          next_grant[i] = 1'b1;
+          next_mask[i]  = 1'b0;
+          break;
+        end
+      end
+
+      // If all masters were served
+      if ((mask_ff & req_i) == '0) begin
+        next_mask = '1;
+        for (int i=(N_OF_INPUTS-1); i>=0; i--) begin
+          if (req_i[i] == 1'b1) begin
             next_grant[i] = 1'b1;
             next_mask[i]  = 1'b0;
             break;
           end
-          else if (count_ones() == 'd1) begin
-            // If there's only this input set, grant to it
-            next_grant[i] = 1'b1;
-          end
         end
-        else begin
-          next_mask[i]  = 1'b1;
-        end
-      end
-
-      if (next_mask == 'd0) begin
-        next_mask = '1;
       end
     end
   end

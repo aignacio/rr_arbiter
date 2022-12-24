@@ -4,7 +4,7 @@
 # License           : MIT license <Check LICENSE>
 # Author            : Anderson Ignacio da Silva (aignacio) <anderson@aignacio.com>
 # Date              : 12.05.2021
-# Last Modified Date: 23.12.2022
+# Last Modified Date: 24.12.2022
 # Last Modified By  : Anderson Ignacio da Silva (aignacio) <anderson@aignacio.com>
 import random
 import cocotb
@@ -36,6 +36,13 @@ async def reset_dut(dut):
     await ClockCycles(dut.clk, RST_CYCLES)
     dut.arst.setimmediatevalue(0)
 
+def onehot(val, max_int):
+    print("Val=%d"%val)
+    for i in range(0, 2**(max_int-1)+1):
+        if (val == i):
+            return True
+    return False
+
 async def run_test(dut):
     inputs = int(os.environ['PARAM_N_OF_INPUTS'])
     runs   = int(os.environ['TEST_RUNS'])
@@ -46,13 +53,17 @@ async def run_test(dut):
     await setup_dut(dut)
     await reset_dut(dut)
 
-    for i in range(runs):
-        await ClockCycles(dut.clk, 2)
-        # data = 2**random.randint(0,MAX_WIDTH)-1
-        # dut.async_i.setimmediatevalue(data)
-        # await ClockCycles(dut.clk_sync, 2)
-        # print(f"Expected ["+str(data)+"], dut.sync_o.value ["+str(dut.sync_o.value)+"]")
-        # assert data == dut.sync_o.value, "Unexpected 2FF behavior!"
+    for i in range((2**inputs)):
+        # Start testing
+        await ClockCycles(dut.clk, 1)
+        dut.req_i.setimmediatevalue(i)
+
+        for i in range(5*inputs):
+            dut.update_i.setimmediatevalue(1)
+            await ClockCycles(dut.clk, 1)
+            dut.update_i.setimmediatevalue(0)
+            await ClockCycles(dut.clk, 2)
+            assert onehot(dut.grant_o, inputs), "Grant is not one-hot encoding"
 
 if cocotb.SIM_NAME:
     factory = TestFactory(run_test)

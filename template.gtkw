@@ -1,0 +1,60 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sat Dec 24 12:30:42 2022
+[*]
+[dumpfile] "/home/aignacio/projects/rr_arbiter/run_dir/rr_arbiter_N_OF_INPUTS=4/dump.fst"
+[dumpfile_mtime] "Sat Dec 24 12:26:26 2022"
+[dumpfile_size] 1488
+[savefile] "/home/aignacio/projects/rr_arbiter/template.gtkw"
+[timestart] 0
+[size] 3648 1842
+[pos] -1 -1
+*-19.581261 6769000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] .
+[treeopen] .rr_arbiter.
+[sst_width] 251
+[signals_width] 264
+[sst_expanded] 1
+[sst_vpaned_height] 565
+@29
+rr_arbiter.arst
+@28
+rr_arbiter.clk
+rr_arbiter.update_i
+@800022
+rr_arbiter.mask_ff[3:0]
+@28
+(0)rr_arbiter.mask_ff[3:0]
+(1)rr_arbiter.mask_ff[3:0]
+(2)rr_arbiter.mask_ff[3:0]
+(3)rr_arbiter.mask_ff[3:0]
+@1001200
+-group_end
+@800022
+rr_arbiter.req_i[3:0]
+@28
+[color] 2
+(0)rr_arbiter.req_i[3:0]
+[color] 2
+(1)rr_arbiter.req_i[3:0]
+[color] 2
+(2)rr_arbiter.req_i[3:0]
+[color] 2
+(3)rr_arbiter.req_i[3:0]
+@1001200
+-group_end
+@800022
+rr_arbiter.grant_o[3:0]
+@28
+[color] 7
+(0)rr_arbiter.grant_o[3:0]
+[color] 7
+(1)rr_arbiter.grant_o[3:0]
+[color] 7
+(2)rr_arbiter.grant_o[3:0]
+[color] 7
+(3)rr_arbiter.grant_o[3:0]
+@1001200
+-group_end
+[pattern_trace] 1
+[pattern_trace] 0
