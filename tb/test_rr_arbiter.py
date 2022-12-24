@@ -36,12 +36,12 @@ async def reset_dut(dut):
     await ClockCycles(dut.clk, RST_CYCLES)
     dut.arst.setimmediatevalue(0)
 
-def onehot(val, max_int):
+def onehot(val, width):
     print("Val=%d"%val)
-    for i in range(0, 2**(max_int-1)+1):
-        if (val == i):
+    for i in range(0, width):
+        if (val == 2**i):
             return True
-    return False
+    return True if val == 0 else False
 
 async def run_test(dut):
     inputs = int(os.environ['PARAM_N_OF_INPUTS'])
